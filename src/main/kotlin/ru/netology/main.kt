@@ -1,5 +1,10 @@
 package ru.netology
 
+const val maestro = "Maestro"
+const val visa = "Visa"
+const val mir = "МИР"
+const val vkPay = "VKPay"
+
 const val previousPayMaestro = 75_000_00
 const val previousPayVisa = 100_000_00
 const val previousPayVKPay = 5_000_00
@@ -19,14 +24,20 @@ const val commissionVisa = 0.0075
 var commission = 0
 
 fun main() {
-    commissionCalculation("Maestro", previousPayMaestro, currentPayMaestro)  // Maestro/Mastercard
-    commissionCalculation("Visa", previousPayVisa, currentPayVisa)     // Visa
-    commissionCalculation("VKPay", previousPayVKPay, currentPayVKPay)    // VKPay
-    commissionCalculation("МИР", previousPayMir, currentPayMir)      // МИР
+    commission = commissionCalculation(maestro, previousPayMaestro, currentPayMaestro)  // Maestro/Mastercard
+    printResult(maestro, currentPayMaestro, commission)
 
+    commission = commissionCalculation(visa, previousPayVisa, currentPayVisa)     // Visa
+    printResult(visa, currentPayVisa, commission)
+
+    commission = commissionCalculation(vkPay, previousPayVKPay, currentPayVKPay)    // VKPay
+    printResult(vkPay, currentPayVKPay, commission)
+
+    commission = commissionCalculation(mir, previousPayMir, currentPayMir)      // МИР
+    printResult(mir, currentPayMir, commission)
 }
 
-fun commissionCalculation(payMethodType: String = "VKPay", previousPay: Int = 0, currentPay: Int) {
+fun commissionCalculation(payMethodType: String = "VKPay", previousPay: Int = 0, currentPay: Int): Int {
     commission = 0
     commission = when (payMethodType) {
         "Maestro" -> commissionMaestro(previousPay, currentPay)
@@ -37,7 +48,7 @@ fun commissionCalculation(payMethodType: String = "VKPay", previousPay: Int = 0,
             0
         }
     }
-    printResult(currentPay, commission, payMethodType)
+    return commission
 }
 
 fun commissionMaestro(previousPay: Int = 0, currentPay: Int): Int {
@@ -54,7 +65,7 @@ fun commissionVisa(currentPay: Int): Int {
     return commission
 }
 
-fun printResult(currentPay: Int, commission: Int, payMethodType: String) {
+fun printResult(payMethodType: String, currentPay: Int, commission: Int ) {
     println("Тип оплаты: $payMethodType")
     println("Сумма покупки: ${currentPay / 100} руб. ${currentPay % 100} коп. ")
     println("Комиссия: ${commission / 100} руб. ${commission % 100} коп. ")
